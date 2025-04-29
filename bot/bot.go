@@ -30,5 +30,3 @@ func (b *Bot) Start() {
 	updates := b.initUpdatesChan()
 	b.handleUpdates(updates)
 }
-
-// -------------Public methods Bot-------------

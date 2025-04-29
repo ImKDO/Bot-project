@@ -1,38 +1,47 @@
 package tgBot
 
 import (
+	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 )
 
 const (
-	Start   = "start"
-	Help    = "help"
-	Track   = "track"
-	Untrack = "untrack"
-	List    = "list"
+	START   = "start"
+	HELP    = "help"
+	TRACK   = "track"
+	UNTRACK = "untrack"
+	LIST    = "list"
 )
+
+var description = map[string]string{
+	START:   "start",
+	HELP:    "help",
+	TRACK:   "track",
+	UNTRACK: "untrack",
+	LIST:    "list",
+}
 
 var commands = []tgbotapi.BotCommand{
 	{
-		Command:     Start,
-		Description: "Start the bot",
+		Command:     START,
+		Description: description[START],
 	},
 	{
-		Command:     Help,
-		Description: "Show help",
+		Command:     HELP,
+		Description: description[HELP],
 	},
 	{
-		Command:     Track,
-		Description: "Track the bot",
+		Command:     TRACK,
+		Description: description[TRACK],
 	},
 	{
-		Command:     Untrack,
-		Description: "Untrack the bot",
+		Command:     UNTRACK,
+		Description: description[UNTRACK],
 	},
 	{
-		Command:     List,
-		Description: "List all bots",
+		Command:     LIST,
+		Description: description[LIST],
 	},
 }
 
@@ -44,15 +53,15 @@ func (b *Bot) handleCommands(message *tgbotapi.Message) error {
 	}
 
 	switch message.Command() {
-	case Start:
+	case START:
 		return b.handlerStart(msg)
-	case Help:
+	case HELP:
 		return b.handlerHelp(msg)
-	case Track:
+	case TRACK:
 		return b.handlerTrack(msg)
-	case Untrack:
+	case UNTRACK:
 		return b.handlerUntrack(msg)
-	case List:
+	case LIST:
 		return b.handlerList(msg)
 	default:
 		return nil
@@ -91,16 +100,18 @@ func (b *Bot) handlerShowDownList() error {
 
 }
 
-func (b *Bot) handlerDescriptCommand(command string) string {
-	return command
-}
 func (b *Bot) handlerStart(msg tgbotapi.MessageConfig) error {
-	msg.Text = "Команда /start"
+	msg.Text = fmt.Sprintf("%s and %s", msg.ChatID)
+	//userId := msg.ChannelUsername
 	_, err := b.bot.Send(msg)
 	return err
 }
 func (b *Bot) handlerHelp(msg tgbotapi.MessageConfig) error {
-	msg.Text = "Команда /help"
+	list := ""
+	for i := 0; i < len(commands); i++ {
+		list += "/" + commands[i].Command + " - " + commands[i].Description + "\n"
+	}
+	msg.Text = list
 	_, err := b.bot.Send(msg)
 	return err
 }
@@ -115,7 +126,7 @@ func (b *Bot) handlerUntrack(msg tgbotapi.MessageConfig) error {
 	return err
 }
 func (b *Bot) handlerList(msg tgbotapi.MessageConfig) error {
-	msg.Text = "Команда /list"
+	fmt.Println(commands[0].Command)
 	_, err := b.bot.Send(msg)
 	return err
 }
