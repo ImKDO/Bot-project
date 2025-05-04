@@ -20,7 +20,6 @@ func (b *Bot) initUpdatesChan() tgbotapi.UpdatesChannel {
 
 // -------------Private methods Bot-------------
 
-// -------------Public methods Bot-------------
 func NewBot(bot *tgbotapi.BotAPI) *Bot {
 	return &Bot{bot: bot}
 }

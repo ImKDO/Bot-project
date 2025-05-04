@@ -1,7 +1,7 @@
 package main
 
 import (
-	tgBot "Bot-project/bot"
+	"Bot-project/internal/bot"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
